@@ -80,7 +80,7 @@ const Home: NextPage = () => {
         <ul className={styles.list}>
           {independentPages.map(({ href, title }) => (
             <li key={href}>
-              <a href={href}>{title}</a>
+              <a href={href} rel="noopener noreferrer" target="_blank">{title}</a>
             </li>
           ))}
         </ul>
