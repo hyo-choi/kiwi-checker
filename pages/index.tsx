@@ -1,30 +1,39 @@
 import type { NextPage } from "next";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import styles from "../styles/Home.module.css";
-import { InfoListType } from "../types/types";
+import { InfoListType, RunType } from "../types";
 
 const Home: NextPage = () => {
-  const [databaseId, setDatabaseId] = useState(
-    "5e04401d79294b1592664dafcca583ea"
-  );
-  const [entryPageTitle, setEntryPageTitle] = useState("1st page");
-  const [titlePropertyName, setTitlePropertyName] = useState("이름");
+  const [information, setInformation] = useState<RunType>({
+    titlePropertyName: "이름",
+    entryPageTitle: "1st page",
+    databaseId: "5e04401d79294b1592664dafcca583ea",
+  });
+  const { databaseId, entryPageTitle, titlePropertyName } = information;
   const [independentPages, setIndependentPages] = useState<InfoListType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const getData = async () => {
-      setIsLoading(true);
-      const data = await fetch(
-        `/api/independentPages?databaseId=${databaseId}&entryPageTitle=${entryPageTitle}&titlePropertyName=${titlePropertyName}`
-      );
-      const json = await data.json();
-      setIndependentPages(json);
-      setIsLoading(false);
-    };
-    getData();
-  };
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      const getData = async () => {
+        setIsLoading(true);
+        const data = await fetch(
+          `/api/independentPages?databaseId=${databaseId}&entryPageTitle=${entryPageTitle}&titlePropertyName=${titlePropertyName}`
+        );
+        const json = await data.json();
+        setIndependentPages(json);
+        setIsLoading(false);
+      };
+      getData();
+    },
+    [databaseId, entryPageTitle, titlePropertyName]
+  );
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setInformation((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
   return (
     <div className={styles.home}>
@@ -43,7 +52,7 @@ const Home: NextPage = () => {
             name="databaseId"
             type="text"
             required
-            onChange={(e) => setDatabaseId(e.target.value)}
+            onChange={handleChange}
             value={databaseId}
             placeholder="enter database id"
           />
@@ -55,7 +64,7 @@ const Home: NextPage = () => {
             name="entryPageTitle"
             type="text"
             required
-            onChange={(e) => setEntryPageTitle(e.target.value)}
+            onChange={handleChange}
             value={entryPageTitle}
             placeholder="enter entry page's title"
           />
@@ -67,7 +76,7 @@ const Home: NextPage = () => {
             name="titlePropertyName"
             type="text"
             required
-            onChange={(e) => setTitlePropertyName(e.target.value)}
+            onChange={handleChange}
             value={titlePropertyName}
             placeholder="enter title property's name"
           />
@@ -77,13 +86,18 @@ const Home: NextPage = () => {
         </button>
       </form>
       {independentPages.length > 0 && (
-        <ul className={styles.list}>
-          {independentPages.map(({ href, title }) => (
-            <li key={href}>
-              <a href={href} rel="noopener noreferrer" target="_blank">{title}</a>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <h2>list</h2>
+          <ul className={styles.list}>
+            {independentPages.map(({ href, title }) => (
+              <li key={href}>
+                <a href={href} rel="noopener noreferrer" target="_blank">
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

@@ -3,7 +3,7 @@
 import 'dotenv/config';
 import { Client } from '@notionhq/client';
 import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
-import { InfoListType, RunType } from '../types/types';
+import { InfoListType, RunType } from '../types';
 
 const notion = new Client({ auth: process.env.NOTION_KEY });
 
