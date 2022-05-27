@@ -36,6 +36,7 @@
   width: 20em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .form button {
@@ -57,6 +58,15 @@
   cursor: wait;
   color: gray;
   background-color: khaki;
+}
+
+.form input {
+  box-shadow: none;
+  border: none;
+  border-radius: 0.5em;
+  height: 2em;
+  padding: 0 0.5em;
+  border-bottom: grey solid 1px;
 }
 
 .list {
