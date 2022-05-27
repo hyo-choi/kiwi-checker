@@ -80,7 +80,7 @@ const run = async ({
 
     while (toVisit.length) {
       const pageId = toVisit.shift()!;
-      if (!infoList[pageId].isVisited) {
+      if (infoList[pageId] && !infoList[pageId].isVisited) {
         infoList[pageId].isVisited = true;
         toVisit.push(...infoList[pageId].mentions);
       }
