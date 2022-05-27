@@ -14,3 +14,18 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1d1d1d;
+  }
+
+  * {
+    color: white;
+  }
+
+  input {
+    background-color: grey;
+    color: white;
+  }
+}
