@@ -42,7 +42,7 @@ const run = async ({
   };
 
   const getPageTitle = (page: any): string => {
-    return (page as any).properties[titlePropertyName]?.title[0].text.content;
+    return (page as any).properties[titlePropertyName]?.title[0]?.text.content ?? '제목 없는 문서';
   };
 
   const pages = await fetchPagesFromDB(databaseId);
