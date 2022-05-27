@@ -81,18 +81,18 @@ const Home: NextPage = () => {
         </form>
       </section>
       <section>
-            <h2>list</h2>
+        <h2>list</h2>
         {independentPages && (
-            <ul className={styles.list}>
-              {independentPages.length === 0 && <li>no independent page</li>}
-              {independentPages.map(({ href, title }) => (
-                <li key={href}>
-                  <a href={href} rel="noopener noreferrer" target="_blank">
-                    {title}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          <ul className={styles.list}>
+            {independentPages.length === 0 && <li>no independent page</li>}
+            {independentPages.map(({ href, title }) => (
+              <li key={href}>
+                <a href={href} rel="noopener noreferrer" target="_blank">
+                  {title}
+                </a>
+              </li>
+            ))}
+          </ul>
         )}
       </section>
       <ToastContainer position="top-center" theme="colored" />
