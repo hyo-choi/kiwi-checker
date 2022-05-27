@@ -1,11 +1,9 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-console */
-import 'dotenv/config';
 import { Client } from '@notionhq/client';
 import { QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
-import { InfoListType, RunType } from '../types';
+import { NOTION_KEY } from './constants';
+import { InfoListType, RunType } from './types';
 
-const notion = new Client({ auth: process.env.NOTION_KEY });
+const notion = new Client({ auth: NOTION_KEY });
 
 const fetchPagesFromDB = async (databaseId: string): Promise<QueryDatabaseResponse['results']> => {
   const response: QueryDatabaseResponse = await notion.databases.query({
