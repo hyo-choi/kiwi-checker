@@ -1,20 +1,26 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
+import { ChangeEvent, FormEvent, useCallback, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import styles from "../styles/Home.module.css";
+import { InfoListType, RunType } from "../src/types";
 import {
-  ChangeEvent, FormEvent, useCallback, useState,
-} from 'react';
-import styles from '../styles/Home.module.css';
-import { InfoListType, RunType } from '../src/types';
-import { NOTION_DATA_BASE_ID, NOTION_ENTRY_PAGE_TITLE, NOTION_TITLE_PROPERTY_NAME } from '../src/constants';
+  NOTION_DATA_BASE_ID,
+  NOTION_ENTRY_PAGE_TITLE,
+  NOTION_TITLE_PROPERTY_NAME,
+} from "../src/constants";
+import { toast, ToastContainer } from "react-toastify";
 
 const info: RunType = {
-  titlePropertyName: NOTION_TITLE_PROPERTY_NAME ?? '',
-  entryPageTitle: NOTION_ENTRY_PAGE_TITLE ?? '',
-  databaseId: NOTION_DATA_BASE_ID ?? '',
+  titlePropertyName: NOTION_TITLE_PROPERTY_NAME ?? "",
+  entryPageTitle: NOTION_ENTRY_PAGE_TITLE ?? "",
+  databaseId: NOTION_DATA_BASE_ID ?? "",
 };
 
 const Home: NextPage = () => {
   const [information, setInformation] = useState<RunType>(info);
-  const [independentPages, setIndependentPages] = useState<InfoListType[] | null>(null);
+  const [independentPages, setIndependentPages] = useState<
+    InfoListType[] | null
+  >(null);
   const [isLoading, setIsLoading] = useState(false);
   const { databaseId, entryPageTitle, titlePropertyName } = information;
 
@@ -23,16 +29,20 @@ const Home: NextPage = () => {
       e.preventDefault();
       const getData = async () => {
         setIsLoading(true);
-        const data = await fetch(
-          `/api/independentPages?databaseId=${databaseId}&entryPageTitle=${entryPageTitle}&titlePropertyName=${titlePropertyName}`,
-        );
-        const json = await data.json();
-        setIndependentPages(json);
+        try {
+          const data = await fetch(
+            `/api/independentPages?databaseId=${databaseId}&entryPageTitle=${entryPageTitle}&titlePropertyName=${titlePropertyName}`
+          );
+          const json = await data.json();
+          setIndependentPages(json);
+        } catch (error: any) {
+          toast(error.message, { type: "error" });
+        }
         setIsLoading(false);
       };
       getData();
     },
-    [information],
+    [information]
   );
 
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -52,10 +62,7 @@ const Home: NextPage = () => {
       >
         {Object.keys(information).map((key) => (
           <div key={key} className={styles.formDiv}>
-            <label htmlFor={key}>
-              {key}
-              {' '}
-            </label>
+            <label htmlFor={key}>{key} </label>
             <input
               id={key}
               name={key}
@@ -68,7 +75,7 @@ const Home: NextPage = () => {
           </div>
         ))}
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'loading...' : 'find independent pages'}
+          {isLoading ? "loading..." : "find independent pages"}
         </button>
       </form>
       {independentPages && (
@@ -86,6 +93,10 @@ const Home: NextPage = () => {
           </ul>
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        theme="colored"
+      />
     </div>
   );
 };
