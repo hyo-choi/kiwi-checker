@@ -52,51 +52,50 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.home}>
-      <h1>🥝 kiwi checker</h1>
-      <p>entry와 연결되어있지 않은 문서들을 찾아줍니다.</p>
-      <form
-        className={styles.form}
-        method="get"
-        action="/api/independentPages"
-        onSubmit={handleSubmit}
-      >
-        {Object.keys(information).map((key) => (
-          <div key={key} className={styles.formDiv}>
-            <label htmlFor={key}>{key} </label>
-            <input
-              id={key}
-              name={key}
-              type="text"
-              required
-              onChange={handleChange}
-              value={information[key as keyof RunType]}
-              placeholder={`enter ${key}`}
-            />
-          </div>
-        ))}
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? "loading..." : "find independent pages"}
-        </button>
-      </form>
-      {independentPages && (
-        <div>
-          <h2>list</h2>
-          <ul className={styles.list}>
-            {independentPages.length === 0 && <li>no independent page</li>}
-            {independentPages.map(({ href, title }) => (
-              <li key={href}>
-                <a href={href} rel="noopener noreferrer" target="_blank">
-                  {title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <ToastContainer
-        position="top-center"
-        theme="colored"
-      />
+      <section>
+        <h1>🥝 kiwi checker</h1>
+        <p>entry와 연결되어있지 않은 문서들을 찾아줍니다.</p>
+        <form
+          className={styles.form}
+          method="get"
+          action="/api/independentPages"
+          onSubmit={handleSubmit}
+        >
+          {Object.keys(information).map((key) => (
+            <div key={key} className={styles.formDiv}>
+              <label htmlFor={key}>{key} </label>
+              <input
+                id={key}
+                name={key}
+                type="text"
+                required
+                onChange={handleChange}
+                value={information[key as keyof RunType]}
+                placeholder={`enter ${key}`}
+              />
+            </div>
+          ))}
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "loading..." : "find independent pages"}
+          </button>
+        </form>
+      </section>
+      <section>
+            <h2>list</h2>
+        {independentPages && (
+            <ul className={styles.list}>
+              {independentPages.length === 0 && <li>no independent page</li>}
+              {independentPages.map(({ href, title }) => (
+                <li key={href}>
+                  <a href={href} rel="noopener noreferrer" target="_blank">
+                    {title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+        )}
+      </section>
+      <ToastContainer position="top-center" theme="colored" />
     </div>
   );
 };
