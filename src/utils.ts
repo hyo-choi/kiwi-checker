@@ -14,14 +14,23 @@ const fetchPagesFromDB = async (databaseId: string): Promise<QueryDatabaseRespon
 
 const fetchBlockChildren = async (pageId: string) => {
   const response = await notion.blocks.children.list({ block_id: pageId });
+  const mentions = response.results
+    .map((block: any) => {
+      if (!block?.type) {
+        console.log(block);
+      }
+      return block[block?.type]?.rich_text
+    })
+    .filter((richText) => !!richText)
+    .flat()
+    .filter(
+      (richText) =>
+        richText.type === "mention" && richText.mention.type === "page"
+    )
+    .map((richText) => richText.mention.page.id);
   return {
     pageId,
-    mentions: response.results
-      .filter((block: any) => block.type === 'paragraph')
-      .map((paragraph: any) => paragraph.paragraph.rich_text)
-      .flat()
-      .filter((richText) => richText.type === 'mention')
-      .map((mention) => mention.mention.page.id),
+    mentions,
   };
 };
 
