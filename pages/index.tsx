@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 import { ChangeEvent, FormEvent, useCallback, useState } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/Home.module.css";
@@ -15,6 +16,9 @@ const info: RunType = {
   entryPageTitle: NOTION_ENTRY_PAGE_TITLE ?? "",
   databaseId: NOTION_DATA_BASE_ID ?? "",
 };
+
+const title = '🥝 kiwi checker';
+const description = 'entry와 연결되어있지 않은 문서들을 찾아줍니다.';
 
 const Home: NextPage = () => {
   const [information, setInformation] = useState<RunType>(info);
@@ -52,9 +56,14 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.home}>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <section>
-        <h1>🥝 kiwi checker</h1>
-        <p>entry와 연결되어있지 않은 문서들을 찾아줍니다.</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
         <form
           className={styles.form}
           method="get"
